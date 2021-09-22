@@ -1,1 +1,50 @@
 Example
+--Creating Table with Client Information:
+
+CREATE TABLE client_example (client_ID PRIMARY KEY NOT NULL, 
+client_name varchar (50), client_lastname varchar (50), 
+client_number NUM (20), client_gender varchar (5), client_address 
+ varchar (50),  client_city varchar (50), client_state varchar (5),
+education_level varchar (15), income_level varchar (50), card_category 
+varchar (50), credit_limit varchar (10), months_inactive_12_mon varchar (10), 
+average_utilization_ratio varchar (10));
+
+--Getting Client’s Phone Number and Joining with Client_ID:
+
+SELECT client_ID, client_name, array_agg(client.number) as contact_number 
+FROM Example_table
+JOIN contact_number on client_ID = example.client_id
+GROUP BY example.client_ID, client_name;
+
+---Updating Table with Client First Name, Last Name, and DOB:
+
+UPDATE client_example 
+SET	[client’s First Name] = Pers.PsnFirst, [client’s Late Name] =  
+Pers.PsnLaSt, [client’s Date of Birth] =  Pers.Psnous,	[client Name]	= Pers.ClientName
+FROM [AggregateDatabase1].dbo.[client_table] Pers
+JOIN  clientID.Example  samp
+ON  Pers.MasterKey =  samp.ID
+WHERE Pers.IDOrganization = Pers.IDMasterOrganization
+AND  Pers.Idstatus = 1
+
+-- Is client income level a major factor in determining credit card attrition? 
+
+a.	What are the number of customers in each card category?
+SELECT card_category, COUNT (*) FROM client_example
+GROUP BY card_category ORDER BY  COUNT
+
+b.	Do low-income earners have high incidents of credit card inactivity >= 3 months? 
+
+SELECT months_inactive_12_mon, income_level, 
+COUNT (months_inactive_12_mon) AS Inactive 
+FROM client_example
+WHERE months_inactive_12_mon >= 3 
+GROUP BY months_inactive_12_mon, income_level
+ORDER BY Inactive DESC
+
+--Conclusion and Potential Areas of Improvement: 
+
+The data demonstrates total clients with Less than $40k income level are most inactive with credit card usage over a 12-month period. 
+To improve client credit card usage various strategies could be implemented such as: increase of credit limit for customers in the income 
+level, improved alerts for payment deadline, and aligning rewards through merchant/brand promotions with clients to accelerate credit card usage.
+
